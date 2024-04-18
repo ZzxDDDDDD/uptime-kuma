@@ -1,5 +1,6 @@
 const NotificationProvider = require("./notification-provider");
 const axios = require("axios");
+const proxy = require("node-global-proxy").default;
 
 class Telegram extends NotificationProvider {
     name = "telegram";
@@ -21,6 +22,8 @@ class Telegram extends NotificationProvider {
             if (notification.telegramMessageThreadID) {
                 params.message_thread_id = notification.telegramMessageThreadID;
             }
+            proxy.setConfig("http://192.168.100.3:51000");
+            proxy.start();
 
             await axios.get(`${url}/bot${notification.telegramBotToken}/sendMessage`, {
                 params: params,
